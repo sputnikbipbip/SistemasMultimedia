@@ -13,11 +13,11 @@ function getBuffer(filename) {
 function getOcurrencesByByte(content) {
     let ocurrences = {}
     content.forEach(byte => {
-        let char = String.fromCharCode(byte)
-        if (ocurrences[char] != undefined) {
-            ocurrences[char] += 1
+        //let char = String.fromCharCode(byte)
+        if (ocurrences[byte] != undefined) {
+            ocurrences[byte] += 1
         } else {
-            ocurrences[char] = 1
+            ocurrences[byte] = 1
         }
     })
     return ocurrences
@@ -50,13 +50,13 @@ function sortObject(obj) {
     return arr
 }
 
-function probabiltyExtraction (arr) {
+function probabiltyExtraction (arr, order) {
     return arr.map(elem => {
-        return elem.value/totalOcurrences
+        return elem.value/ (totalOcurrences / order)
     })
 }
 
-function entropyCalculator (arr) {
+function entropyCalc (arr) {
     let entropy = 0
     arr.forEach(prob => {
         entropy += prob * Math.log2(1/prob)
@@ -76,6 +76,39 @@ function getSymbolsWithHigherProb (arr) {
     return nSymbols 
 }
 
+//2
+function getStatesByByte (freqByByte, bytesFromFile) {
+    let foundStates = {}
+    for (const freqKey in freqByByte) {
+        //if all ocurrences have been found, return
+        let statesFound = 1
+        foundStates[freqKey] = []
+        foundStates[freqKey].push({
+        key : freqKey,
+        value : 1
+        }) 
+        for (let i = 0; i < bytesFromFile.length - 1 && statesFound <= freqByByte[freqKey]; i++) {
+            if (bytesFromFile[i] == freqKey) {
+                //check if the combination already is inserted
+                let state = bytesFromFile[i+1]
+                let index = foundStates[freqKey].findIndex(obj => obj.key == state)
+                if (index == -1) {
+                    foundStates[freqKey].push({
+                        key : state,
+                        value : 1
+                    }) 
+                } else {
+                    foundStates[freqKey][index].value += 1
+                }
+                statesFound++
+            }
+        }
+    }
+    return foundStates
+}   
+
+/*
+//1
 function analyseFiles(arr) {
     let counter = 0
     arr.forEach(filename => {
@@ -85,8 +118,8 @@ function analyseFiles(arr) {
         
         let sortedocurrencesByByte = sortObject(ocurrencesByByte)
         //console.log(sortedocurrencesByByte)
-        let probabilityArray = probabiltyExtraction(sortedocurrencesByByte)
-        let entropy = entropyCalculator(probabilityArray)
+        let probabilityArray = probabiltyExtraction(sortedocurrencesByByte, 1)
+        let entropy = entropyCalc(probabilityArray)
         
         //1b
         let nSymbols = getSymbolsWithHigherProb(probabilityArray)
@@ -95,12 +128,16 @@ function analyseFiles(arr) {
         //1c
         let ocurrencesByBlockOf2 = getOcurrencesByBlocksOf2(fileBytes)
         let sortedOcurrencesByBlockOf2 = sortObject(ocurrencesByBlockOf2)
-        let blockProb = probabiltyExtraction(sortedOcurrencesByBlockOf2)
-        let blockEntropy = entropyCalculator(blockProb)
+        let blockProb = probabiltyExtraction(sortedOcurrencesByBlockOf2, 2)
+        let blockEntropy = entropyCalc(blockProb)
         console.log(`\n${filename}: \n\t Entropy of order 1 = ${entropy} \n\t Entropy of order 2 = ${blockEntropy}`)
     }) 
 }
-
 analyseFiles(files)
-
-
+*/
+/*
+let fileBytes = getBuffer('28779-0.txt')
+let ocurrences = getOcurrencesByByte(fileBytes)
+let stateByChar = getStatesByByte(ocurrences, fileBytes)
+console.log(stateByChar)
+*/
