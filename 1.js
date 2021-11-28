@@ -3,6 +3,7 @@
 const fs = require('fs')
 const files = fs.readdirSync('./Files');
 let totalOcurrences = 0
+let markovEntropy = 0
 
 function getBuffer(filename) {
     const data  = fs.readFileSync(`./Files/${filename}`)
@@ -77,37 +78,53 @@ function getSymbolsWithHigherProb (arr) {
 }
 
 //2
-function getStatesByByte (freqByByte, bytesFromFile) {
+function getStatesByByte (bytesFromFile) {
     let foundStates = {}
-    for (const freqKey in freqByByte) {
-        //if all ocurrences have been found, return
-        let statesFound = 1
-        foundStates[freqKey] = []
-        foundStates[freqKey].push({
-        key : freqKey,
-        value : 1
-        }) 
-        for (let i = 0; i < bytesFromFile.length - 1 && statesFound <= freqByByte[freqKey]; i++) {
-            if (bytesFromFile[i] == freqKey) {
-                //check if the combination already is inserted
-                let state = bytesFromFile[i+1]
-                let index = foundStates[freqKey].findIndex(obj => obj.key == state)
-                if (index == -1) {
-                    foundStates[freqKey].push({
-                        key : state,
-                        value : 1
-                    }) 
-                } else {
-                    foundStates[freqKey][index].value += 1
-                }
-                statesFound++
+    for (let i = 0, j = 1; j <= bytesFromFile.length - 1; i++, j++) {
+        if (foundStates[bytesFromFile[i]]) {
+            //check if the combination already is inserted
+            foundStates[bytesFromFile[i]].ocurrences += 1
+            let state = bytesFromFile[i+1]
+            let index = foundStates[bytesFromFile[i]].states.findIndex(obj => obj.key == state)
+            if (index == -1) {
+                foundStates[bytesFromFile[i]].states.push({
+                    key : state,
+                    value : 1 
+                }) 
+            } else {
+                foundStates[bytesFromFile[i]].states[index].value += 1
+            }
+        } else {
+            foundStates[bytesFromFile[i]] = {}
+            foundStates[bytesFromFile[i]].ocurrences = 1
+            foundStates[bytesFromFile[i]].states = []
+            foundStates[bytesFromFile[i]].states.push({
+                key : bytesFromFile[i+1],
+                value : 1
+            }) 
+        }
+    }
+    //set states transition probs and calculate markov entropy
+    for (const prop in foundStates) {
+        let stateEntropy = 0
+        let stateProb = 0
+        for (let i = 0; i < foundStates[prop].states.length; i++) {
+            let nTransitionsToTheState = foundStates[prop].states[i].value
+            foundStates[prop].states[i].value = nTransitionsToTheState / foundStates[prop].ocurrences
+            if (!(prop == foundStates[prop].states[i].key)) {
+                let prob = foundStates[prop].states[i].value
+                stateEntropy += prob * Math.log2(1/prob)
+            } 
+            //transition to the same state <=> stateProb
+            else {
+                stateProb = foundStates[prop].states[i].value
             }
         }
+        markovEntropy += stateEntropy * stateProb
     }
     return foundStates
 }   
 
-/*
 //1
 function analyseFiles(arr) {
     let counter = 0
@@ -130,14 +147,23 @@ function analyseFiles(arr) {
         let sortedOcurrencesByBlockOf2 = sortObject(ocurrencesByBlockOf2)
         let blockProb = probabiltyExtraction(sortedOcurrencesByBlockOf2, 2)
         let blockEntropy = entropyCalc(blockProb)
-        console.log(`\n${filename}: \n\t Entropy of order 1 = ${entropy} \n\t Entropy of order 2 = ${blockEntropy}`)
+
+        //2
+        getStatesByByte(getBuffer(filename))
+        console.log(
+            `\n${filename}: 
+            \n\t Entropy of order 1 = ${entropy} 
+            \n\t Entropy of order 2 = ${blockEntropy}
+            \n\t Markov entropy of order 1 = ${markovEntropy}`
+        )
     }) 
 }
 analyseFiles(files)
-*/
 /*
-let fileBytes = getBuffer('28779-0.txt')
-let ocurrences = getOcurrencesByByte(fileBytes)
-let stateByChar = getStatesByByte(ocurrences, fileBytes)
-console.log(stateByChar)
+//2 markov algorithm
+let fileBytes = getBuffer('rfc7932.txt')
+let stateByChar = getStatesByByte(fileBytes)
+let objectStringified = JSON.stringify(stateByChar, null, "  ")
+console.log(objectStringified)
+console.log(markovEntropy)
 */
