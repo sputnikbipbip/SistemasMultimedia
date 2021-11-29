@@ -110,6 +110,7 @@ function getStatesByByte (bytesFromFile) {
         let stateProb = 0
         for (let i = 0; i < foundStates[prop].states.length; i++) {
             let nTransitionsToTheState = foundStates[prop].states[i].value
+            //prop calculation = nTransitions to this state / nOcurrences 
             foundStates[prop].states[i].value = nTransitionsToTheState / foundStates[prop].ocurrences
             if (!(prop == foundStates[prop].states[i].key)) {
                 let prob = foundStates[prop].states[i].value
@@ -127,7 +128,6 @@ function getStatesByByte (bytesFromFile) {
 
 //1
 function analyseFiles(arr) {
-    let counter = 0
     arr.forEach(filename => {
         //1a
         let fileBytes = getBuffer(filename)
