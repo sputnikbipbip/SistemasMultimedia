@@ -167,3 +167,7 @@ let objectStringified = JSON.stringify(stateByChar, null, "  ")
 console.log(objectStringified)
 console.log(markovEntropy)
 */
+
+module.exports = {
+    
+}
