@@ -187,5 +187,7 @@ console.log(markovEntropy)
 */
 
 module.exports = {
-    
+    getOcurrencesByByte,
+    entropyCalc,
+    probabiltyExtraction
 }
