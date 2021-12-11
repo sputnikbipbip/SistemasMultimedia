@@ -4,7 +4,7 @@ const fs = require('fs')
 
 
 //Random probability generator
-function getRandomIntInclusive(min, max) {
+function getRandomWithDecimal(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.random() * (max - min);
@@ -39,7 +39,7 @@ function transitions(p) {
     let result = [97]
     let breakRes = 0
     for (let i = 0; i < 255; i++) {
-        let current = getRandomIntInclusive(0, 1).toFixed(2)
+        let current = getRandomWithDecimal(0, 1).toFixed(2)
         switch (true) {
             case current >= states[0].min && current < states[0].max :
                 breakRes = -3;
@@ -94,7 +94,7 @@ function transitions(p) {
  */
 
 
- const content = Buffer.from(transitions(getRandomIntInclusive(0, 1)))
+ const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
  
  fs.writeFileSync('./ResultFiles/markovWithMemory.txt', content, 'utf-8', err => {
    if (err) {
@@ -114,4 +114,28 @@ function entropyCal() {
     }
 } 
 
-entropyCal()
+//entropyCal()
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+let producted = []
+
+function source() {
+    for (let i = 0; i < 2000; i++) {
+        let random = getRandomInt(0, 65536)
+        let counter = 0
+        console.log(random + '\n')
+        for (let j = 15; j >= 0; j--) {
+            let bit = (random>>j) & 1
+            if (bit) ++counter
+        }
+        producted.push(counter)
+    }
+    return producted
+}
+
+console.log(source())

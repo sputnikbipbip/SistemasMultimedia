@@ -160,6 +160,11 @@ function analyseFiles(arr) {
         let blockEntropy = entropyOrder2Calc(blockProb)
 
         //2
+        /**
+         *  let stateByChar = getStatesByByte(fileBytes, probabilityArray)
+            let objectStringified = JSON.stringify(stateByChar, null, "  ")
+            console.log(objectStringified)
+         */
         let markovEntropy = getStatesByByte(getBuffer(filename), ocurrencesByByte)
         console.log(
             `\n${filename}: 
@@ -170,24 +175,3 @@ function analyseFiles(arr) {
     }) 
 }
 analyseFiles(files)
-/*
-//2 markov algorithm
-let fileBytes = getBuffer('rfc7932.txt')
-
-let ocurrencesByByte = getOcurrencesByByte(fileBytes)
-
-let sortedocurrencesByByte = sortObject(ocurrencesByByte)
-//console.log(sortedocurrencesByByte)
-let probabilityArray = probabiltyExtraction(sortedocurrencesByByte, 1)
-
-let stateByChar = getStatesByByte(fileBytes, probabilityArray)
-let objectStringified = JSON.stringify(stateByChar, null, "  ")
-console.log(objectStringified)
-console.log(markovEntropy)
-*/
-
-module.exports = {
-    getOcurrencesByByte,
-    entropyCalc,
-    probabiltyExtraction
-}

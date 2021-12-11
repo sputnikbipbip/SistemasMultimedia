@@ -1,0 +1,159 @@
+23961-8.txt: 
+
+         Entropy of order 1 = 5.241452692539313 
+
+         Entropy of order 2 = 4.414098862221024
+
+         Markov entropy of order 1 = 3.6252819918915815
+
+28779-0.txt:
+
+         Entropy of order 1 = 4.826545709580757
+
+         Entropy of order 2 = 3.7602013196543833
+
+         Markov entropy of order 1 = 2.710388232068223
+
+cna21_1f_resultados.xls:
+
+         Entropy of order 1 = 4.98500823286715
+
+         Entropy of order 2 = 3.9399450769315183
+
+         Markov entropy of order 1 = 3.3994959117547947
+
+cna21_1f_resultados.xlsx:
+
+         Entropy of order 1 = 7.861034296969083
+
+         Entropy of order 2 = 7.084129981195512
+
+         Markov entropy of order 1 = 6.803348598000309
+
+FPessoa-g.bmp:
+
+         Entropy of order 1 = 6.470082919206617
+
+         Entropy of order 2 = 4.856915163082626
+
+         Markov entropy of order 1 = 3.3421866834525535
+
+FPessoa.bmp:
+
+         Entropy of order 1 = 6.964181411663531
+
+         Entropy of order 2 = 5.847696272289027
+
+         Markov entropy of order 1 = 4.809887680473422
+
+FPessoa.jpg:
+
+         Entropy of order 1 = 7.971408702223561
+
+         Entropy of order 2 = 7.387705461930277
+
+         Markov entropy of order 1 = 7.252466935052729
+
+FPessoa.png:
+
+         Entropy of order 1 = 7.996183654832377
+
+         Entropy of order 2 = 7.757277148320953
+
+         Markov entropy of order 1 = 7.760264849098441
+
+gota.mp4:
+
+         Entropy of order 1 = 7.897931588118254
+
+         Entropy of order 2 = 7.5382988184617075
+
+         Markov entropy of order 1 = 7.352112138572198
+
+gota.wav: 
+
+         Entropy of order 1 = 7.393228242185638       
+
+         Entropy of order 2 = 6.786397787775714       
+
+         Markov entropy of order 1 = 7.008471133847132
+
+gota8bm.wav: 
+
+         Entropy of order 1 = 5.953867366061742        
+
+         Entropy of order 2 = 4.633986728060457        
+
+         Markov entropy of order 1 = 3.3173197063370807
+
+kodim10.bmp: 
+
+         Entropy of order 1 = 7.1978425567265         
+
+         Entropy of order 2 = 6.312217476505349       
+
+         Markov entropy of order 1 = 5.448668682656872
+
+kodim10.png: 
+
+         Entropy of order 1 = 7.9811507881844355
+
+         Entropy of order 2 = 7.82568719702207
+
+         Markov entropy of order 1 = 7.759601398648818
+
+lenag.bmp:
+
+         Entropy of order 1 = 7.4587586964427
+
+         Entropy of order 2 = 6.119512705127104
+
+         Markov entropy of order 1 = 4.98461018078278
+
+lz4io.c:
+
+         Entropy of order 1 = 5.0143141550665185
+
+         Entropy of order 2 = 3.909138914557239
+
+         Markov entropy of order 1 = 2.810014662639944
+
+M1F1-Alaw-AFsp.wav:
+
+         Entropy of order 1 = 6.196116733550865
+
+         Entropy of order 2 = 5.816735019510092
+
+         Markov entropy of order 1 = 5.767480434480514
+
+O Ano da Morte de Ricardo Reis.srt:
+
+         Entropy of order 1 = 5.128925311533801
+
+         Entropy of order 2 = 4.094679869027656
+
+         Markov entropy of order 1 = 3.0655002909631186
+
+pdf.pdf:
+
+         Entropy of order 1 = 7.938873664430092
+
+         Entropy of order 2 = 7.431894455049475
+
+         Markov entropy of order 1 = 7.320255398635652
+
+rfc7932.html:
+
+         Entropy of order 1 = 4.700061224791655
+
+         Entropy of order 2 = 3.8580965696877527
+
+         Markov entropy of order 1 = 3.130680020354267
+
+rfc7932.txt:
+
+         Entropy of order 1 = 4.499781405511202
+
+         Entropy of order 2 = 3.7749338599857998
+
+         Markov entropy of order 1 = 3.0529676754641573
