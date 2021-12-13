@@ -147,6 +147,8 @@ function analyseFiles(arr) {
         let sortedocurrencesByByte = sortObject(ocurrencesByByte)
         //console.log(sortedocurrencesByByte)
         let probabilityArray = probabiltyExtraction(sortedocurrencesByByte)
+        //assumindo probabilidade igual para cada símbolo
+        let entropyWithSameProbBySymbol = Math.log2(1/(1/(probabilityArray.length)))
         let entropy = entropyCalc(probabilityArray)
         
         //1b
@@ -167,9 +169,10 @@ function analyseFiles(arr) {
          */
         let markovEntropy = getStatesByByte(getBuffer(filename), ocurrencesByByte)
         console.log(
-            `\n${filename}: 
+            `\n${filename}:
+            \n\t Entropy (equal probability by symbol) = ${entropyWithSameProbBySymbol} 
             \n\t Entropy of order 1 = ${entropy} 
-            \n\t Entropy of order 2 = ${blockEntropy}
+            \n\t Entropy of order 2 = ${blockEntropy} 
             \n\t Markov entropy of order 1 = ${markovEntropy}`
         )
     }) 

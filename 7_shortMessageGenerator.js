@@ -41,23 +41,31 @@ function getSequence(filename) {
     for (let i = random; i < random + 128; i++) {
         message += String.fromCharCode(data[i])
     }
-    const result = Buffer.from(message)
-    return result
+    return message
 }
 
 function deflater(filename) {
     //original message
-    const buffer = getSequence(filename)
-    fs.writeFileSync('./ResultFiles/originalMessage.txt', buffer, 'utf-8', err => {
+    const message = getSequence(filename)
+    fs.writeFileSync('./ResultFiles/originalMessage.txt', Buffer.from(message), 'utf-8', err => {
         if (err) {
           console.error(err)
           return
         }
     })
-    const gzip = zlib.createGzip()
-    const inp = fs.createReadStream('./ResultFiles/originalMessage.txt')
-    const out = fs.createWriteStream('./ResultFiles/deflatedMessage.txt.gz')
-    inp.pipe(gzip).pipe(out)
+    zlib.deflate(message, (err, buffer) => {
+        if (!err) {
+            fs.writeFileSync('./ResultFiles/deflatedMessage.txt', buffer, err => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+        } 
+        else {
+          console.log(err);
+        }
+    });
 }
 
 deflater("23961-8.txt")

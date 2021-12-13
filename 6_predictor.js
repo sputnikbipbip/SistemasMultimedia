@@ -132,7 +132,8 @@ function analyseFiles(arr) {
             after    #bits = ${nBitsAfterPrediction[i]}
             smaller = ${smaller[i]} 
             bigger = ${bigger[i]} 
-            Predictor = P${i}`)
+            Predictor = P${i}
+            compression percentage = ${((fileNSymbols * 8) / nBitsAfterPrediction[i]).toFixed(2)}`)
             // \n ${res[3]}
             //array = ${errorArrays[i]} 
         }

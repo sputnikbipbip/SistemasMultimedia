@@ -92,11 +92,9 @@ function transitions(p) {
     2048    -  773  (our compression system)
 
  */
-
-
- const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
+const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
  
- fs.writeFileSync('./ResultFiles/markovWithMemory.txt', content, 'utf-8', err => {
+ fs.writeFileSync('./ResultFiles/3_markovWithMemory.txt', content, 'utf-8', err => {
    if (err) {
      console.error(err)
      return
@@ -113,29 +111,4 @@ function entropyCal() {
         console.log(`entropy of p = ${p}\n \t${res}`)
     }
 } 
-
 //entropyCal()
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-let producted = []
-
-function source() {
-    for (let i = 0; i < 2000; i++) {
-        let random = getRandomInt(0, 65536)
-        let counter = 0
-        console.log(random + '\n')
-        for (let j = 15; j >= 0; j--) {
-            let bit = (random>>j) & 1
-            if (bit) ++counter
-        }
-        producted.push(counter)
-    }
-    return producted
-}
-
-console.log(source())
