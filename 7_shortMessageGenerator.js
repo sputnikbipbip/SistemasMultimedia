@@ -4,22 +4,6 @@ const zlib = require('zlib')
 const fs = require('fs')
 const files = fs.readdirSync('./Files')
 
-/**
- * L -> comprimento constante = 128 (tamanho da sequência)
- * Alfabeto = {0,1,2...255}
- * 
- * Posições na sequência
- * 0123.....127|128......255|256.......511
- * 
- * |ab()ufeufefuefbuebf|
- * a = 97 -> 7
- * b = 98 -> 7
- * 
- * número de shifts 
- * 
- * Número médio de bits =  #bits / 128
- * 
- */
 let fileSize = 0
 
 function getBuffer(filename) {
@@ -47,7 +31,7 @@ function getSequence(filename) {
 function deflater(filename) {
     //original message
     const message = getSequence(filename)
-    fs.writeFileSync('./ResultFiles/originalMessage.txt', Buffer.from(message), 'utf-8', err => {
+    fs.writeFileSync('./ResultFiles/7_originalMessage.txt', Buffer.from(message), 'utf-8', err => {
         if (err) {
           console.error(err)
           return
@@ -55,7 +39,7 @@ function deflater(filename) {
     })
     zlib.deflate(message, (err, buffer) => {
         if (!err) {
-            fs.writeFileSync('./ResultFiles/deflatedMessage.txt', buffer, err => {
+            fs.writeFileSync('./ResultFiles/7_deflatedMessage.txt', buffer, err => {
                 if (err) {
                     console.error(err)
                     return

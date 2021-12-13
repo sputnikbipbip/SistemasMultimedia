@@ -73,34 +73,6 @@ function transitions(p) {
     return result
 }
 
-/**
- *  Entropy = 1-p log 2 (1/(1-p/4)) + p * log 2 (1/(p/3))
- * 
- *  7 estados -> (é preciso) -> 3 bits
- *  Contudo um caracter -> 8 bits
- * 
- *  256 * 8 bits / 255 * 3 + 8 = 2,67
- * 
- *  O alfabeto produzido pelo fonte impossibilita a formação de palavras úteis para a geração de dicionários
- *  de outras aplicações.
- * 
- * Para p = 0.5756947026564363 (na geração do domínio dos estados)
- * Original - After compression (nº bits)
-
-    2048    -  2888 (7z)
-    2048    -  3064 (Zip)
-    2048    -  773  (our compression system)
-
- */
-const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
- 
- fs.writeFileSync('./ResultFiles/3_markovWithMemory.txt', content, 'utf-8', err => {
-   if (err) {
-     console.error(err)
-     return
-   }
- })
-
 function entropyCal() {
     let p = 0.2
     for (let i = 0; i < 5; i++, p += 0.2) {
@@ -112,3 +84,16 @@ function entropyCal() {
     }
 } 
 //entropyCal()
+
+function startSource() {
+    const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
+ 
+    fs.writeFileSync('./ResultFiles/3_markovWithMemory.txt', content, 'utf-8', err => {
+      if (err) {
+        console.error(err)
+        return
+      }
+    })
+}
+//startSource() 
+

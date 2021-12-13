@@ -87,7 +87,7 @@ function analyseFiles(arr) {
         let data = getBuffer(filename)
         let errorArrays = predictor(data)
         console.log(`\nfilename =  ${filename}`)
-        /** Valor absoluto - bit já reservado para sinal
+        /** Valor absoluto - 1 bit já reservado para sinal
          * 0   - 15    _> 5
          * 16  - 31    _> 6
          * 32  - 63    _> 7
