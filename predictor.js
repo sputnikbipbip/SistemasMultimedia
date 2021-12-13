@@ -14,7 +14,12 @@ const files = fs.readdirSync('./Files')
 let fileNSymbols = 0
 let smaller = [0,0,0,0]
 let bigger = [0,0,0,0]
-let aux = {}
+let errorOcurrences = {
+    0 : {},
+    1 : {},
+    2 : {},
+    3 : {}
+}
 
 function getBuffer(filename) {
     const data  = fs.readFileSync(`./Files/${filename}`)
@@ -54,15 +59,14 @@ function predictor(data) {
         if (i > 2) {
             predictor[3].push((data[i-1]) + (data[i-2]) - (data[i-3]))
         }
-
-        if (aux[Math.abs(data[i] - predictor[1][i])] == undefined)
-            aux[Math.abs(data[i] - predictor[1][i])] = 1
-        else
-            aux[Math.abs(data[i] - predictor[1][i])]++
-
-
         for (let j = 0; j < 4; j++) {
-          
+            //error frequency
+            if (errorOcurrences[j][Math.abs(data[i] - predictor[j][i])] == undefined)
+                errorOcurrences[j][Math.abs(data[i] - predictor[j][i])] = 1
+            else
+                errorOcurrences[j][Math.abs(data[i] - predictor[j][i])]++
+
+            // max and min value found
             if (bigger[j] < (data[i] - predictor[j][i])) 
                 bigger[j] = (data[i] - predictor[j][i])
                 
@@ -79,44 +83,71 @@ function predictor(data) {
 }
 
 function analyseFiles(arr) {
-    /*
     arr.forEach(filename => {
         let data = getBuffer(filename)
         let errorArrays = predictor(data)
         console.log(`\nfilename =  ${filename}`)
+        /** Valor absoluto - bit já reservado para sinal
+         * 0   - 15    _> 5
+         * 16  - 31    _> 6
+         * 32  - 63    _> 7
+         * 64  - 127   _> 8     
+         * 128 - 255   _> 9
+         * 256 - 511   _> 10
+         * 512 - 1023  _> 11
+         */
+        
         for (let i = 0; i < 4; i++) {
+            let nBitsAfterPrediction = [0,0,0,0]
+            let keys = Object.keys(errorOcurrences[i])
+            for (let k = 0; k < keys.length; k++) {
+                switch (true) {
+                    case keys[k] >= 0 && keys[k] < 16 :
+                        nBitsAfterPrediction[i] += 5 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 16 && keys[k] < 32 :
+                        nBitsAfterPrediction[i] += 6 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 32 && keys[i] < 62 :
+                        nBitsAfterPrediction[i] += 7 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 64 && keys[i] < 128 :
+                        nBitsAfterPrediction[i] += 8 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 128 && keys[i] < 256 :
+                        nBitsAfterPrediction[i] += 9 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 256 && keys[i] < 512 :
+                        nBitsAfterPrediction[i] += 10 * errorOcurrences[i][keys[k]]
+                        break;
+                    case keys[k] >= 512 && keys[k] < 1024 :
+                        nBitsAfterPrediction[i] += 11 * errorOcurrences[i][keys[k]]
+                        break;
+                    default:
+                        console.log(`Something went wrong`)
+                }
+            }
             console.log(`
             original #bits = ${fileNSymbols * 8}
-            array = ${errorArrays[i]} 
+            after    #bits = ${nBitsAfterPrediction[i]}
             smaller = ${smaller[i]} 
             bigger = ${bigger[i]} 
             Predictor = P${i}`)
             // \n ${res[3]}
+            //array = ${errorArrays[i]} 
         }
         smaller = [0,0,0,0]
-        bigger = [0,0,0,0]        
+        bigger = [0,0,0,0]
+        //frequency of the results from the symbols less the predictor
+        errorOcurrences = {
+            0 : {},
+            1 : {},
+            2 : {},
+            3 : {}
+        }
+               
     })
-    */
-    let data = getBuffer(arr)
-    let errorArrays = predictor(data)
-    console.log(`\nfilename =  ${arr}`)
-    console.log(`
-        original #bits = ${fileNSymbols * 8}
-        smaller = ${smaller[1]} 
-        bigger = ${bigger[1]} 
-        Predictor = P${1}
-        array = ${JSON.stringify(aux)} `)
-    smaller = [0,0,0,0]
-    bigger = [0,0,0,0]   
 }
-/** Valor absoluto - bit já reservado para sinal
- * 0   - 15    _> 5
- * 16  - 31    _> 6
- * 32  - 63    _> 7
- * 64  - 127   _> 8     
- * 128 - 255   _> 9
- * 256 - 511   _> 10
- * 512 - 1023  _> 11
- */
 
-analyseFiles("23961-8.txt")
+
+analyseFiles(files)
