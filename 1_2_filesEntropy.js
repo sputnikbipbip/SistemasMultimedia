@@ -162,19 +162,17 @@ function analyseFiles(arr) {
         let blockEntropy = entropyOrder2Calc(blockProb)
 
         //2
-        /**
-         *  let stateByChar = getStatesByByte(fileBytes, probabilityArray)
-            let objectStringified = JSON.stringify(stateByChar, null, "  ")
-            console.log(objectStringified)
-         */
         let markovEntropy = getStatesByByte(getBuffer(filename), ocurrencesByByte)
         console.log(
             `\n${filename}:
-            \n\t Entropy (equal probability by symbol) = ${entropyWithSameProbBySymbol} 
-            \n\t Entropy of order 1 = ${entropy} 
-            \n\t Entropy of order 2 = ${blockEntropy} 
-            \n\t Markov entropy of order 1 = ${markovEntropy}`
+            \t Entropy of order 1 = ${entropy}
+            \t most ocurred symbol = ${sortedocurrencesByByte[0].key} : ${sortedocurrencesByByte[0].value}`
         )
+            /**
+             * \n\t Entropy (equal probability by symbol) = ${entropyWithSameProbBySymbol} 
+             *   \n\t Entropy of order 2 = ${blockEntropy} 
+             \n\t Markov entropy of order 1 = ${markovEntropy}
+             */
     }) 
 }
 analyseFiles(files)

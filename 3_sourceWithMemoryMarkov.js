@@ -33,12 +33,18 @@ function mapStates(p) {
     return map
 }
 
-function transitions(p) {
+/**
+ * 
+ * @param {Number} p 
+ * @param {Number} nSymbols 
+ * @returns 
+ */
+function transitions(p, nSymbols) {
     const states = mapStates(p)
     console.log(`p = ${p}\n`)
     let result = [97]
     let breakRes = 0
-    for (let i = 0; i < 255; i++) {
+    for (let i = 0; i < nSymbols; i++) {
         let current = getRandomWithDecimal(0, 1).toFixed(2)
         switch (true) {
             case current >= states[0].min && current < states[0].max :
@@ -84,10 +90,9 @@ function entropyCal() {
     }
 } 
 //entropyCal()
-
-function startSource() {
-    const content = Buffer.from(transitions(getRandomWithDecimal(0, 1)))
- 
+/*
+function startGenerator() {
+    const content = Buffer.from(transitions(getRandomWithDecimal(0, 1), 255))
     fs.writeFileSync('./ResultFiles/3_markovWithMemory.txt', content, 'utf-8', err => {
       if (err) {
         console.error(err)
@@ -95,5 +100,17 @@ function startSource() {
       }
     })
 }
-//startSource() 
+*/
+
+/**
+ * 
+ * @param {string} filename 
+ * @param {Number} size 
+ * @returns {Array} array with the message generated
+ */
+function startGenerator(filename, size) {
+    return transitions(getRandomWithDecimal(0, 1), size)
+}
+
+module.exports = startGenerator
 
