@@ -1,13 +1,15 @@
 'use strict'
 
 const fs = require('fs')
-const files = fs.readdirSync('./serie2Files');
-const dictionaries = fs.readdirSync('./Dictionaries');
+const files = fs.readdirSync('./serie2Files')
+const dictionaries = fs.readdirSync('./Dictionaries')
 const generator7 = require('./7_shortMessageGenerator')
 const generator3 = require('./3_sourceWithMemoryMarkov')
 const path = require('path')
-const zlib = require('zlib');  
-
+const zlib = require('zlib')
+const lz4 = require('lz4')  
+//const compressSync = require('node-zstd').compressSync;
+//const ZstdCodec = require('zstd-codec').ZstdCodec
 
 /**
  * Increments message size by 128 x nFiles
@@ -78,13 +80,52 @@ function brotliCompress(filename) {
   });
 }
 
+function lz4Encode(filename) {
+  var input = fs.readFileSync(`./serie2Files/${filename}`, 'utf8', function(err, data){
+    if(err) console.log(err)
+    return data
+  });
+  var output = lz4.encode(input, {dict : true})
+  fs.writeFileSync(`./LZ4Files/${filename}.lz4`, output)
+}
+
+/*
+function zstdEncode(dic, filename){
+  const data = fs.readFileSync(`./serie2Files/${filename}`, 'utf8', function(err, data){
+    if(err) console.log(err)
+    return data
+  });
+  ZstdCodec.run(zstd => {
+    const streaming = new ZstdCodec.Streaming();
+    const dictionary = fs.readFileSync(`./Dictionaries/${dic}`)
+    const cdict = new zstd.Dict.Compression(dictionary)
+    const compressed = streaming.compressUsingDict(tou8(data), cdict)
+    fs.writeFileSync(`./zstdFiles/${dic}_${filename}`, compressed)
+ 
+  })
+}*/
+/*
+function zstdEncode(dic, filename){
+  const data = fs.readFileSync(`./serie2Files/${filename}`, 'utf8', function(err, data){
+    if(err) console.log(err)
+    return data
+  });
+  try {
+    var output = compressSync(input);
+  } catch(err) {
+    // ...
+  }
+}*/
+
 files.forEach(filename => {
     acquireDifferentFiles(filename, 16)
 
     dictionaries.forEach(dic => {
       deflateWithDictionary(dic, filename)
+      //zstdEncode(dic, filename)
     })
     brotliCompress(filename)
+    lz4Encode(filename)
 })
 
 

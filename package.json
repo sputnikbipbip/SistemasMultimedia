@@ -2,7 +2,7 @@
   "name": "sistemasmultimedia",
   "version": "1.0.0",
   "description": "",
-  "main": "9_imageRecoding.js",
+  "main": "8_compressionAlgoritm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/SPUTNIKBIPBIP/SistemasMultimedia#readme",
   "dependencies": {
+    "buffer-to-uint8array": "^1.1.0",
+    "lz4": "^0.6.5",
     "pngjs": "^6.0.0",
-    "zlib": "^1.0.5"
+    "zlib": "^1.0.5",
+    "zstd-codec": "^0.1.2"
   }
 }

@@ -8,8 +8,9 @@ let I2i = []
 let I2j = []
 let I1_I2 = []
 
+
 const fs = require('fs'),
-    PNG = require('pngjs').PNG;
+PNG = require('pngjs').PNG;
 
 function getMSE() {
     var data = fs.readFileSync('./png_photos/kodim23original.png');
@@ -30,8 +31,15 @@ function getMSE() {
           I2k.push(png.data[idx])
           I2i.push(png.data[idx + 1])
           I2j.push(png.data[idx + 2])
+          png.data[idx] = (I1k[idx] - png.data[idx]) % 256 
+          png.data[idx + 1] = (I1i[idx + 1] - png.data[idx + 1]) % 256
+          png.data[idx + 2] = (I1j[idx] - I1j[idx + 2]) % 256
         }
     }
+    /**E256 image*/
+    var buffer = PNG.sync.write(png);
+    fs.writeFileSync('./E256/kodim23_e256.png', buffer);
+
     for (let i = 0; i < I1k.length; i++) {
         I1_I2.push((I1i[i] - I2i[i]) + (I1j[i] - I2j[i]) + (I1k[i] - I2k[i]))
     }
@@ -46,6 +54,7 @@ function getMSE() {
 function getPSNR(MSE) {
     return (10 * Math.log10((Math.pow(255, 2)) / MSE)) + ' dB'
 }
+
 
 let MSE = getMSE()
 let PSNR = getPSNR(MSE)
