@@ -8,6 +8,8 @@ const fs = require('fs'),
 let I1k = []
 let I1i = []
 let I1j = []
+let MSE = 0
+let SNR = 0
 
 /**
  * advances first position of the arrays 
@@ -27,7 +29,8 @@ function emptyArrays() {
  * @returns 
  */
 function getMSE(filePath1, filePath2) {
-    let Somatory = 0
+    let numeradorMSE = 0
+    let numeradorSNR = 0
     let data = fs.readFileSync(filePath1, function(err, data){
         if(err) console.log(err)
         return data
@@ -36,7 +39,6 @@ function getMSE(filePath1, filePath2) {
     for (let y = 0; y < png.height; y++) {
         for (let x = 0; x < png.width; x++) {
             let idx = (png.width * y + x) << 2;
-            //let idx = png.width * y + x
             I1k.push(png.data[idx])
             I1i.push(png.data[idx + 1])
             I1j.push(png.data[idx + 2])
@@ -51,17 +53,20 @@ function getMSE(filePath1, filePath2) {
     for (let y = 0; y < png.height; y++) {
         for (let x = 0; x < png.width; x++, counter++) {
             let idx = (png.width * y + x) << 2;
-            //let idx = png.width * y + x
             //e256 - updating current png to become e256 image file (original file - compressed file)
             png.data[idx] = (I1k[counter] - png.data[idx]) % 256 
             png.data[idx + 1] = (I1i[counter] - png.data[idx + 1]) % 256
             png.data[idx + 2] = (I1j[counter] - png.data[idx + 2]) % 256
             //(SSS[I1(k,i,j)-I2(k,i,j)])
-            Somatory += (Math.pow(
-                (I1k[counter] - png.data[idx]) + 
-                (I1i[counter] - png.data[idx + 1]) + 
-                (I1j[counter] - png.data[idx + 2])
-                ), 2)
+            numeradorMSE += (
+                Math.pow((I1k[counter] - png.data[idx]), 2) + 
+                Math.pow((I1i[counter] - png.data[idx + 1]), 2) + 
+                Math.pow((I1j[counter] - png.data[idx + 2]), 2))
+            numeradorSNR += (
+                Math.pow(I1k[counter], 2) + 
+                Math.pow(I1i[counter], 2) + 
+                Math.pow(I1j[counter], 2)
+                )
         }
     }
     /**E256 image*/
@@ -73,10 +78,11 @@ function getMSE(filePath1, filePath2) {
             return
         }
       })
-    let N = 3 * png.width * png.height
+    let denominadorMSE = 3 * png.width * png.height
     //reset result array
     emptyArrays()
-    return Somatory / N
+    MSE = numeradorMSE / denominadorMSE
+    SNR = (numeradorSNR / denominadorMSE) / MSE
 }
 
 /**
@@ -132,41 +138,44 @@ function getOriginalPNG(filePath1, filePath2) {
  * @returns {string} PSNR
  */
 function getPSNR(MSE) {
-    return (10 * Math.log10((Math.pow(255, 2)) / MSE)) + ' dB'
+    return (10 * Math.log10(
+        Math.pow(
+            (Math.pow(2, 24) - 1), 2) / MSE)
+        ) + ' dB'
 }
 
 /**
  * MSE and PSNR extraction,
  * every time the methods runs it generates an e256 file made by (firstImage - secondImage)
  */
-/*
-let MSE = getMSE('./png_photos/kodim23original.png', './png_photos/kodim23uploaded.png')
+getMSE('./png_photos/kodim23original.png', './png_photos/kodim23uploaded.png')
 let PSNR = getPSNR(MSE)
-console.log(`MSE = ${MSE} \nPSNR = ${PSNR}`)
+console.log(`'./png_photos/kodim23original.png' _> './png_photos/kodim23uploaded.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-MSE = getMSE('./png_photos/kodim01.png', './png_photos/kodim01_q_30.png')
+getMSE('./png_photos/kodim01.png', './png_photos/kodim01_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim01.png' _> MSE = ${MSE} \nPSNR = ${PSNR}`)
+console.log(`'./png_photos/kodim01.png' _> './png_photos/kodim01_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-MSE = getMSE('./png_photos/kodim02.png', './png_photos/kodim02_q_30.png')
+getMSE('./png_photos/kodim02.png', './png_photos/kodim02_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim02.png' _> MSE = ${MSE} \nPSNR = ${PSNR}`)
+console.log(`'./png_photos/kodim02.png' _> './png_photos/kodim02_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-MSE = getMSE('./png_photos/kodim03.png', './png_photos/kodim03_q_30.png')
+getMSE('./png_photos/kodim03.png', './png_photos/kodim03_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim03.png' _> MSE = ${MSE} \nPSNR = ${PSNR}`)
+console.log(`'./png_photos/kodim03.png' _> './png_photos/kodim03_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-MSE = getMSE('./png_photos/kodim06.png', './png_photos/kodim06_q_30.png')
+getMSE('./png_photos/kodim06.png', './png_photos/kodim06_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim06.png' _> MSE = ${MSE} \nPSNR = ${PSNR}`)
+console.log(`'./png_photos/kodim06.png' _> './png_photos/kodim06_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-MSE = getMSE('./png_photos/kodim17.png', './png_photos/kodim17_q_50.png')
+getMSE('./png_photos/kodim17.png', './png_photos/kodim17_q_50.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim17.png' _> MSE = ${MSE} \nPSNR = ${PSNR}`)
-*/
+console.log(`'./png_photos/kodim17.png' _> './png_photos/kodim17_q_50.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
-
-
+/**WebP with loss vs JPEG */
+getMSE('./png_photos/kodim01.png', './png_photos/kodim01_jpeg.png')
+PSNR = getPSNR(MSE)
+console.log(`'./WebP/kodim01.jpeg' _> './png_photos/kodim01_jpeg.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 
 
