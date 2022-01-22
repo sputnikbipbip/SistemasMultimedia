@@ -151,34 +151,53 @@ function getPSNR(MSE) {
  */
 getMSE('./png_photos/kodim23original.png', './png_photos/kodim23uploaded.png')
 let PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim23original.png' _> './png_photos/kodim23uploaded.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim23uploaded.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 getMSE('./png_photos/kodim01.png', './png_photos/kodim01_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim01.png' _> './png_photos/kodim01_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim01_q_30.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 getMSE('./png_photos/kodim02.png', './png_photos/kodim02_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim02.png' _> './png_photos/kodim02_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim02_q_30.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 getMSE('./png_photos/kodim03.png', './png_photos/kodim03_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim03.png' _> './png_photos/kodim03_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim03_q_30.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 getMSE('./png_photos/kodim06.png', './png_photos/kodim06_q_30.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim06.png' _> './png_photos/kodim06_q_30.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim06_q_30.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 getMSE('./png_photos/kodim17.png', './png_photos/kodim17_q_50.png')
 PSNR = getPSNR(MSE)
-console.log(`'./png_photos/kodim17.png' _> './png_photos/kodim17_q_50.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim17_q_50.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 /**WebP with loss vs JPEG */
 getMSE('./png_photos/kodim01.png', './png_photos/kodim01_jpeg.png')
 PSNR = getPSNR(MSE)
-console.log(`'./WebP/kodim01.jpeg' _> './png_photos/kodim01_jpeg.png'\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+console.log(`kodim01_jpeg.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
+/**Different quality WebP compressions */
+getMSE('./png_photos/kodim01.png', './WebP/kodim01_q_5.png')
+PSNR = getPSNR(MSE)
+console.log(`kodim01_q_5.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
+getMSE('./png_photos/kodim01.png', './WebP/kodim01_q_10.png')
+PSNR = getPSNR(MSE)
+console.log(`kodim01_q_10.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+
+getMSE('./png_photos/kodim01.png', './WebP/kodim01_q_20.png')
+PSNR = getPSNR(MSE)
+console.log(`kodim01_q_20.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+
+getMSE('./png_photos/kodim01.png', './WebP/kodim01_q_25.png')
+PSNR = getPSNR(MSE)
+console.log(`kodim01_q_25.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
+
+getMSE('./png_photos/kodim01.png', './WebP/kodim01_q_30.png')
+PSNR = getPSNR(MSE)
+console.log(`kodim01_q_30.png\n SNR = ${SNR} \nPSNR = ${PSNR}\n`)
 
 /**
  * get original pgn file by adding e256 from (original_WebP - loss_WebP)

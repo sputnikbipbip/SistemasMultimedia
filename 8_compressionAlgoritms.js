@@ -5,9 +5,9 @@ const files = fs.readdirSync('./serie2Files')
 const dictionaries = fs.readdirSync('./Dictionaries')
 const generator7 = require('./7_shortMessageGenerator')
 const generator3 = require('./3_sourceWithMemoryMarkov')
-const path = require('path')
 const zlib = require('zlib')
-const lz4 = require('lz4')  
+const lz4 = require('lz4')
+const path = require('path')
 //const compressSync = require('node-zstd').compressSync;
 //const ZstdCodec = require('zstd-codec').ZstdCodec
 
@@ -86,7 +86,7 @@ function lz4Encode(filename) {
     return data
   });
   var output = lz4.encode(input, {dict : true})
-  fs.writeFileSync(`./LZ4Files/${filename}.lz4`, output)
+  fs.writeFileSync(`./LZ4Files/${path.basename(filename).split('.').slice(0, -1)}.lz4`, output)
 }
 
 /*
