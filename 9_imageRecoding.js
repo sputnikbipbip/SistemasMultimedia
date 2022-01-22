@@ -62,6 +62,7 @@ function getMSE(filePath1, filePath2) {
                 Math.pow((I1k[counter] - png.data[idx]), 2) + 
                 Math.pow((I1i[counter] - png.data[idx + 1]), 2) + 
                 Math.pow((I1j[counter] - png.data[idx + 2]), 2))
+                
             numeradorSNR += (
                 Math.pow(I1k[counter], 2) + 
                 Math.pow(I1i[counter], 2) + 

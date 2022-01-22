@@ -90,6 +90,7 @@ function lz4Encode(filename) {
 }
 
 /*
+NOT WORKING
 function zstdEncode(dic, filename){
   const data = fs.readFileSync(`./serie2Files/${filename}`, 'utf8', function(err, data){
     if(err) console.log(err)
@@ -105,6 +106,7 @@ function zstdEncode(dic, filename){
   })
 }*/
 /*
+NOT WORKING
 function zstdEncode(dic, filename){
   const data = fs.readFileSync(`./serie2Files/${filename}`, 'utf8', function(err, data){
     if(err) console.log(err)
