@@ -1,0 +1,23 @@
+{
+  "name": "sistemasmultimedia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "9_imageRecoding.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SPUTNIKBIPBIP/SistemasMultimedia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SPUTNIKBIPBIP/SistemasMultimedia/issues"
+  },
+  "homepage": "https://github.com/SPUTNIKBIPBIP/SistemasMultimedia#readme",
+  "dependencies": {
+    "pngjs": "^6.0.0",
+    "zlib": "^1.0.5"
+  }
+}

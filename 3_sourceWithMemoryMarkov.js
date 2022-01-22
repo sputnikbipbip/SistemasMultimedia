@@ -42,7 +42,8 @@ function mapStates(p) {
 function transitions(p, nSymbols) {
     const states = mapStates(p)
     console.log(`p = ${p}\n`)
-    let result = [97]
+    let result = [Math.floor(Math.random() * 256)]
+    console.log(`first letter = ${result}`)
     let breakRes = 0
     for (let i = 0; i < nSymbols; i++) {
         let current = getRandomWithDecimal(0, 1).toFixed(2)
